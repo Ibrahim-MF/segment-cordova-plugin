@@ -2,7 +2,7 @@
 <plugin id="segment-cordova-plugin"
 	xmlns="http://apache.org/cordova/ns/plugins/1.0"
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	version="4.0.0" >
+	version="4.1.0" >
 
     <name>SegmentCordovaPlugin</name>
     <license>MIT License</license>
@@ -26,30 +26,34 @@
         </config-file>
         <source-file src="src/android/SegmentCordovaPlugin.java" target-dir="src/com/segment/cordova/plugin" />
 
-        <framework src="src/android/build.gradle" custom="true" type="gradleReference" />
+        <!-- In case of using device-mode for braze uncomment the below line -->    
+        <!-- <framework src="src/android/build.gradle" custom="true" type="gradleReference" /> -->
 
-        <framework src="com.segment.analytics.android:analytics:4.3.1"/>
-        <framework src="com.appboy:appboy-segment-integration:4.0.0"/>
+        <framework src="com.segment.analytics.android:analytics:4.9.2"/>
+        <framework src="com.segment.analytics.android.integrations:firebase:+@aar"/>
+
+        <!-- In case of using device-mode uncomment the below lines -->
+        <!-- <framework src="com.appboy:appboy-segment-integration:7.0.0"/>  -->
     </platform>
 
     <platform name="ios">
-        <config-file parent="/*" target="config.xml">
-            <feature name="SegmentCordovaPlugin">
-                <param name="ios-package" value="SegmentCordovaPlugin" />
-            </feature>
-        </config-file>
+            <config-file parent="/*" target="config.xml">
+                <feature name="SegmentCordovaPlugin">
+                    <param name="ios-package" value="SegmentCordovaPlugin" />
+                </feature>
+            </config-file>
 
-        <header-file src="src/ios/SegmentCordovaPlugin.h" target-dir="SegmentCordovaPlugin"/>
-        <source-file src="src/ios/SegmentCordovaPlugin.m" target-dir="SegmentCordovaPlugin"/>
+            <header-file src="src/ios/SegmentCordovaPlugin.h" target-dir="SegmentCordovaPlugin"/>
+            <source-file src="src/ios/SegmentCordovaPlugin.m" target-dir="SegmentCordovaPlugin"/>
 
-        <podspec>
-            <config>
-                <source url="https://cdn.cocoapods.org/"/>
-            </config>
-            <pods>
-                <pod name="Analytics" spec="3.7.1"/>
-                <pod name="Segment-Appboy" spec="3.0.0"/>
-            </pods>
-        </podspec>
-    </platform>
+            <podspec>
+                <config>
+                    <source url="https://cdn.cocoapods.org/"/>
+                </config>
+                <pods>
+                    <pod name="Analytics" spec="4.1.3"/>
+                    <pod name="Segment-Firebase" spec="2.7.2"/>
+                </pods>
+            </podspec>
+        </platform>
 </plugin>
