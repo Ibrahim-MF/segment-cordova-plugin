@@ -1,3 +1,4 @@
-repositories{
-  maven { url 'http://appboy.github.io/appboy-android-sdk/sdk' }
-}
+// In case of using device-mode for braze uncomment the below line
+// repositories{
+//   maven { url 'http://appboy.github.io/appboy-android-sdk/sdk' }
+// }
