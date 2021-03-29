@@ -24,7 +24,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import com.segment.analytics.android.integrations.appboy.AppboyIntegration;
+import com.segment.analytics.android.integrations.firebase.FirebaseIntegration;
+
+// In-Case of using device-mode for braze Uncomment the below lines
+// import com.segment.analytics.android.integrations.appboy.AppboyIntegration;
 
 public class SegmentCordovaPlugin extends CordovaPlugin {
 
@@ -94,11 +97,13 @@ public class SegmentCordovaPlugin extends CordovaPlugin {
                             builder.recordScreenViews();
                         }
                     }
-                    if (obj.has("trackAttributionInformation")) {
-                        if (obj.optBoolean("trackAttributionInformation")) {
-                            builder.trackAttributionInformation();
-                        }
-                    }
+                    // Removed the ability to natively report attribution information 
+                    // via Segment integrations Since version 4.9.0
+                    // if (obj.has("trackAttributionInformation")) {
+                    //     if (obj.optBoolean("trackAttributionInformation")) {
+                    //         builder.trackAttributionInformation();
+                    //     }
+                    // }
                     // android only
                     if (obj.has("collectDeviceId")) {
                         builder.collectDeviceId(obj.optBoolean("collectDeviceId"));
@@ -132,12 +137,18 @@ public class SegmentCordovaPlugin extends CordovaPlugin {
                         options = toOptions(obj.optJSONObject("launchOptions"));
                         builder.defaultOptions(options);
                     }
-                    if (obj.has("enableBrazeIntegration") && obj.optBoolean("enableBrazeIntegration") == true) {
-                        builder.use(AppboyIntegration.FACTORY);
+                    if (obj.has("enableFirebaseIntegration") && obj.optBoolean("enableFirebaseIntegration") == true) {
+                        builder.use(FirebaseIntegration.FACTORY);
                     }
+                    // In-Case of using device-mode for Barze Uncomment the below lines
+                    // if (obj.has("enableBrazeIntegration") && obj.optBoolean("enableBrazeIntegration") == true) {
+                    //     builder.use(AppboyIntegration.FACTORY);
+                    // }
                     // middleware, connectionFactory, optOut are not currently supported.
                 }
 
+                //Below line fix `Method addObserver must be called on the main thread`
+                builder.experimentalUseNewLifecycleMethods(false);
                 Analytics analytics = builder.build();
                 // Set the initialized instance as a globally accessible instance.
                 Analytics.setSingletonInstance(analytics);
@@ -236,10 +247,9 @@ public class SegmentCordovaPlugin extends CordovaPlugin {
 
         try {
             if (obj != null) {
-                userId = obj.optString("userId");
                 groupId = obj.optString("groupId");
 
-                if (null != userId && userId.length() > 0 && null != groupId && groupId.length() > 0) {
+                if (null != groupId && groupId.length() > 0) {
                     traits = toTraits(obj.optJSONObject("traits"));
                     options = toOptions(obj.optJSONObject("options"));
 
@@ -249,9 +259,9 @@ public class SegmentCordovaPlugin extends CordovaPlugin {
                     Analytics.with(cordova.getActivity().getApplicationContext())
                             .group(groupId, traits, options);
 
-                    callbackContext.success("group " + groupId + " for user " + userId);
+                    callbackContext.success("associated user with group " + groupId);
                 } else {
-                    callbackContext.error("userId and groupId are required.");
+                    callbackContext.error("groupId are required.");
                 }
             } else {
                 callbackContext.error("Segment object is required.");
