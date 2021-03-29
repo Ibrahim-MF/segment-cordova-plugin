@@ -1,6 +1,9 @@
 #import "SegmentCordovaPlugin.h"
-#import "SEGAppboyIntegrationFactory.h"
-#import "Appboy.h"
+#import <Segment-Firebase/SEGFirebaseIntegrationFactory.h>
+
+// In-Case of using device-mode for Braze Uncomment the below lines
+// #import "SEGAppboyIntegrationFactory.h"
+// #import "Appboy.h"
 
 @implementation SegmentCordovaPlugin
 
@@ -57,15 +60,21 @@
                 if ([configOptions objectForKey:@"trackPushNotifications"] != nil) {
                     configuration.trackPushNotifications = [[configOptions objectForKey:@"trackPushNotifications"] boolValue];
                 }
-                if ([configOptions objectForKey:@"trackAttributionInformation"] != nil) {
-                    configuration.trackAttributionData = [[configOptions objectForKey:@"trackAttributionInformation"] boolValue];
-                }
+                // Removed the ability to natively report attribution information 
+                // via Segment integrations Since version 4.9.0
+                // if ([configOptions objectForKey:@"trackAttributionInformation"] != nil) {
+                //     configuration.trackAttributionData = [[configOptions objectForKey:@"trackAttributionInformation"] boolValue];
+                // }
                 if ([configOptions objectForKey:@"defaultOptions"] != nil) {
                     configuration.launchOptions = [configOptions objectForKey:@"defaultOptions"];
                 }
-                if ([configOptions objectForKey:@"enableBrazeIntegration"] != nil && [[configOptions objectForKey:@"enableBrazeIntegration"] boolValue] == true) {
-                    [configuration use:[SEGAppboyIntegrationFactory instance]];
+                if ([configOptions objectForKey:@"enableFirebaseIntegration"] != nil && [[configOptions objectForKey:@"enableFirebaseIntegration"] boolValue] == true){
+                    [configuration use:[SEGFirebaseIntegrationFactory instance]];
                 }
+                // In-Case of using device-mode Uncomment the below lines
+                // if ([configOptions objectForKey:@"enableBrazeIntegration"] != nil && [[configOptions objectForKey:@"enableBrazeIntegration"] boolValue] == true) {
+                //     [configuration use:[SEGAppboyIntegrationFactory instance]];
+                // }
             }
         }
 
