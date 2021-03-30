@@ -1,5 +1,5 @@
 #import "SegmentCordovaPlugin.h"
-#import <Segment-Firebase/SEGFirebaseIntegrationFactory.h>
+#import "SEGFirebaseIntegrationFactory.h"
 
 // In-Case of using device-mode for Braze Uncomment the below lines
 // #import "SEGAppboyIntegrationFactory.h"
