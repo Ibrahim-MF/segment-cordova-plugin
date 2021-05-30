@@ -2,7 +2,7 @@
 <plugin id="segment-cordova-plugin"
 	xmlns="http://apache.org/cordova/ns/plugins/1.0"
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	version="4.1.0" >
+	version="4.1.1" >
 
     <name>SegmentCordovaPlugin</name>
     <license>MIT License</license>
@@ -27,13 +27,27 @@
         <source-file src="src/android/SegmentCordovaPlugin.java" target-dir="src/com/segment/cordova/plugin" />
 
         <!-- In case of using device-mode for braze uncomment the below line -->    
-        <!-- <framework src="src/android/build.gradle" custom="true" type="gradleReference" /> -->
+        <framework src="src/android/build.gradle" custom="true" type="gradleReference" />
 
-        <framework src="com.segment.analytics.android:analytics:4.9.2"/>
+        <framework src="com.segment.analytics.android:analytics:4.+"/>
         <framework src="com.segment.analytics.android.integrations:firebase:+@aar"/>
 
         <!-- In case of using device-mode uncomment the below lines -->
-        <!-- <framework src="com.appboy:appboy-segment-integration:7.0.0"/>  -->
+        <framework src="com.appboy:appboy-segment-integration:+"/> 
+
+        <config-file target="AndroidManifest.xml" parent="/manifest">
+            <uses-permission android:name="android.permission.INTERNET" />
+            <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <service android:name="com.appboy.AppboyFirebaseMessagingService">
+                <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                </intent-filter>
+            </service>
+        </config-file>
+        <resource-file src="src/android/appboy.xml" target="res/values/appboy.xml" />
     </platform>
 
     <platform name="ios">
@@ -56,4 +70,6 @@
                 </pods>
             </podspec>
         </platform>
+        
+        <hook type="after_prepare" src="scripts/after_prepare.js" />
 </plugin>
