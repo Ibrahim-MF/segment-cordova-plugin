@@ -27,7 +27,7 @@ import java.util.Map;
 import com.segment.analytics.android.integrations.firebase.FirebaseIntegration;
 
 // In-Case of using device-mode for braze Uncomment the below lines
-// import com.segment.analytics.android.integrations.appboy.AppboyIntegration;
+import com.segment.analytics.android.integrations.appboy.AppboyIntegration;
 
 public class SegmentCordovaPlugin extends CordovaPlugin {
 
@@ -141,9 +141,9 @@ public class SegmentCordovaPlugin extends CordovaPlugin {
                         builder.use(FirebaseIntegration.FACTORY);
                     }
                     // In-Case of using device-mode for Barze Uncomment the below lines
-                    // if (obj.has("enableBrazeIntegration") && obj.optBoolean("enableBrazeIntegration") == true) {
-                    //     builder.use(AppboyIntegration.FACTORY);
-                    // }
+                    if (obj.has("enableBrazeIntegration") && obj.optBoolean("enableBrazeIntegration") == true) {
+                        builder.use(AppboyIntegration.FACTORY);
+                    }
                     // middleware, connectionFactory, optOut are not currently supported.
                 }
 

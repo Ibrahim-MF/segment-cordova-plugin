@@ -1,4 +1,30 @@
 // In case of using device-mode for braze uncomment the below line
-// repositories{
-//   maven { url 'http://appboy.github.io/appboy-android-sdk/sdk' }
-// }
+repositories{
+  maven { url "http://appboy.github.io/appboy-android-sdk/sdk" }
+  maven { url "http://appboy.github.io/appboy-segment-android/sdk" }
+}
+
+dependencies {
+    implementation 'com.appboy:android-sdk-ui:13.1.2'
+    implementation 'com.google.firebase:firebase-core:17.5.0'
+    implementation 'com.google.firebase:firebase-messaging:20.2.4'
+    implementation "androidx.appcompat:appcompat:1.2.0"
+}
+
+buildscript {
+    repositories {
+      google()
+      jcenter()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:4.0.0'
+        classpath 'com.google.gms:google-services:4.2.0'
+    }
+}
+
+// apply the google services plugin by its class name since we're not
+// in the root gradle file
+ext.postBuildExtras = {
+    apply plugin: com.google.gms.googleservices.GoogleServicesPlugin
+}
