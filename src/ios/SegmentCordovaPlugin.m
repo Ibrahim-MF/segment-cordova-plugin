@@ -2,12 +2,84 @@
 #import "SEGFirebaseIntegrationFactory.h"
 
 // In-Case of using device-mode for Braze Uncomment the below lines
-// #import "SEGAppboyIntegrationFactory.h"
-// #import "Appboy.h"
+#import "SEGAppboyIntegrationFactory.h"
+#import "Appboy.h"
+#import "AppDelegate+Appboy.h"
+
+@interface SegmentCordovaPlugin()
+  @property NSString *APIKey;
+  @property NSString *disableAutomaticPushRegistration;
+  @property NSString *disableAutomaticPushHandling;
+  @property NSString *apiEndpoint;
+  @property NSString *enableIDFACollection;
+  @property NSString *enableLocationCollection;
+  @property NSString *enableGeofences;
+  @property NSString *disableUNAuthorizationOptionProvisional;
+@end
 
 @implementation SegmentCordovaPlugin
 
 - (void) pluginInitialize {
+  NSDictionary *settings = self.commandDelegate.settings;
+  self.APIKey = settings[@"com.appboy.api_key"];
+  self.disableAutomaticPushRegistration = settings[@"com.appboy.ios_disable_automatic_push_registration"];
+  self.disableAutomaticPushHandling = settings[@"com.appboy.ios_disable_automatic_push_handling"];
+  self.apiEndpoint = settings[@"com.appboy.ios_api_endpoint"];
+  self.enableIDFACollection = settings[@"com.appboy.ios_enable_idfa_automatic_collection"];
+  self.enableLocationCollection = settings[@"com.appboy.enable_location_collection"];
+  self.enableGeofences = settings[@"com.appboy.geofences_enabled"];
+  self.disableUNAuthorizationOptionProvisional = settings[@"com.appboy.ios_disable_un_authorization_option_provisional"];
+    
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didFinishLaunchingListener:) name:UIApplicationDidFinishLaunchingNotification object:nil];
+  if (![self.disableAutomaticPushHandling isEqualToString:@"YES"]) {
+    [AppDelegate swizzleHostAppDelegate];
+  }
+}
+
+- (void)didFinishLaunchingListener:(NSNotification *)notification {
+  NSMutableDictionary *appboyLaunchOptions = [@{ABKSDKFlavorKey : @(CORDOVA)} mutableCopy];
+
+  // Set location collection and geofences from preferences
+  appboyLaunchOptions[ABKEnableAutomaticLocationCollectionKey] = self.enableLocationCollection;
+  appboyLaunchOptions[ABKEnableGeofencesKey] = self.enableGeofences;
+
+  // Add the endpoint only if it's non nil
+  if (self.apiEndpoint != nil) {
+    appboyLaunchOptions[ABKEndpointKey] = self.apiEndpoint;
+  }
+
+  [Appboy startWithApiKey:self.APIKey
+            inApplication:notification.object
+        withLaunchOptions:notification.userInfo
+        withAppboyOptions:appboyLaunchOptions];
+
+  if (![self.disableAutomaticPushRegistration isEqualToString:@"YES"]) {
+    UIUserNotificationType notificationSettingTypes = (UIUserNotificationTypeBadge | UIUserNotificationTypeAlert | UIUserNotificationTypeSound);
+    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_9_x_Max) {
+      UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+      // If the delegate hasn't been set yet, set it here in the plugin
+      if (center.delegate == nil) {
+        center.delegate = [UIApplication sharedApplication].delegate;
+      }
+      UNAuthorizationOptions options = UNAuthorizationOptionAlert | UNAuthorizationOptionSound | UNAuthorizationOptionBadge;
+      if (@available(iOS 12.0, *)) {
+        if (![self.disableUNAuthorizationOptionProvisional isEqualToString:@"YES"]) {
+          options = options | UNAuthorizationOptionProvisional;
+        }
+      }
+      [center requestAuthorizationWithOptions:options
+                            completionHandler:^(BOOL granted, NSError *_Nullable error) {
+                              [[Appboy sharedInstance] pushAuthorizationFromUserNotificationCenter:granted];
+                            }];
+      [[UIApplication sharedApplication] registerForRemoteNotifications];
+    } else if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
+      UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:notificationSettingTypes categories:nil];
+      [[UIApplication sharedApplication] registerForRemoteNotifications];
+      [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+    } else {
+      [[UIApplication sharedApplication] registerForRemoteNotificationTypes: notificationSettingTypes];
+    }
+  }
 }
 
 - (void)startWithConfiguration:(CDVInvokedUrlCommand*)command {
@@ -68,13 +140,14 @@
                 if ([configOptions objectForKey:@"defaultOptions"] != nil) {
                     configuration.launchOptions = [configOptions objectForKey:@"defaultOptions"];
                 }
+                //Firebase Integration [device-mode]
                 if ([configOptions objectForKey:@"enableFirebaseIntegration"] != nil && [[configOptions objectForKey:@"enableFirebaseIntegration"] boolValue] == true){
                     [configuration use:[SEGFirebaseIntegrationFactory instance]];
                 }
-                // In-Case of using device-mode Uncomment the below lines
-                // if ([configOptions objectForKey:@"enableBrazeIntegration"] != nil && [[configOptions objectForKey:@"enableBrazeIntegration"] boolValue] == true) {
-                //     [configuration use:[SEGAppboyIntegrationFactory instance]];
-                // }
+                // Appboy Integration [device-mode]
+                if ([configOptions objectForKey:@"enableBrazeIntegration"] != nil && [[configOptions objectForKey:@"enableBrazeIntegration"] boolValue] == true) {                      
+                    [configuration use:[SEGAppboyIntegrationFactory instance]];
+                 }
             }
         }
 
