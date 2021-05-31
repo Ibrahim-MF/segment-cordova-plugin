@@ -54,19 +54,29 @@
             <config-file parent="/*" target="config.xml">
                 <feature name="SegmentCordovaPlugin">
                     <param name="ios-package" value="SegmentCordovaPlugin" />
+                    <param name="onload" value="true" />
                 </feature>
             </config-file>
 
             <header-file src="src/ios/SegmentCordovaPlugin.h" target-dir="SegmentCordovaPlugin"/>
             <source-file src="src/ios/SegmentCordovaPlugin.m" target-dir="SegmentCordovaPlugin"/>
 
-            <podspec>
+            <!-- Added these files to register push notification for braze integration -->
+            <header-file src="src/ios/AppDelegate+Appboy.h" />
+            <source-file src="src/ios/AppDelegate+Appboy.m" />
+
+             <podspec>
                 <config>
                     <source url="https://cdn.cocoapods.org/"/>
                 </config>
                 <pods>
-                    <pod name="Analytics" spec="4.1.3"/>
-                    <pod name="Segment-Firebase" spec="2.7.2"/>
+                    <pod name="Analytics" spec="~> 4.1.4"/>
+                    <pod name="Segment-Appboy" spec="~> 4.1.0"/>
+                    <pod name="Segment-Firebase" spec="~> 2.7.2"/>
+
+                    <!-- Added Firebase dependencies for Segment-Firebase SDK integration -->
+                    <pod name="Firebase/Core" spec="~> 7.7"/>
+                    <pod name="FirebaseAnalytics" spec="~> 7.7"/>
                 </pods>
             </podspec>
         </platform>
