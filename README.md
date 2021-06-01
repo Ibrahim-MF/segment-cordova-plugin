@@ -2,7 +2,7 @@
 
 > Cordova plugin for [Segment mobile SDK](https://segment.com/docs/sources/#mobile)
 
-This version of the plugin uses versions `4.1.3` (iOS) and `4.9.2` (Android) of the Segment mobile SDK.
+This version of the plugin uses versions `4.1.4` (iOS) and `4.9.4` (Android) of the Segment mobile SDK.
 You can view Android and iOS SDK sources on Github.
 
 -  https://github.com/segmentio/analytics-android
@@ -17,7 +17,22 @@ Prerequisites:
 You can install the latest version of the plugin directly from git through the Cordova CLI:
 
 ```bash
-cordova plugin add https://github.com/Ibrahim-MF/segment-cordova-plugin.git
+cordova plugin add https://github.com/Ibrahim-MF/segment-cordova-plugin.git \
+    --variable ANDROID_API_KEY=<set-your-appoy-api-key-for-android> \
+    --variable ANDROID_CUSTOM_ENDPOINT=<set-your-appoy-custom-endpoint-for-android> \
+    --variable FCM_REGISTERATION_ENABLED=<true Or false> \
+    --variable FCM_SENDER_ID=<set-your-firebase-sender-id> \
+```
+
+Or you can specify them as plugin variables in your config.xml, for example:
+
+```bash
+    <plugin name="segment-cordova-plugin" spec="git+https://github.com/Ibrahim-MF/segment-cordova-plugin.git">
+        <variable name="ANDROID_API_KEY" value="set-your-appoy-api-key-for-android" />
+        <variable name="ANDROID_CUSTOM_ENDPOINT" value="set-your-appoy-custom-endpoint-for-android" />
+        <variable name="FCM_REGISTERATION_ENABLED" value="true" />
+        <variable name="FCM_SENDER_ID" value="set-your-firebase-sender-id" />
+    </plugin>
 ```
 
 ## Usage
@@ -130,5 +145,6 @@ window.Segment.startWithConfiguration(IOS_OR_ANDROID_KEY, {
 	trackInAppPurchases: true,
 	recordScreenViews: true,
 	enableFirebaseIntegration: true,
+	enableBrazeIntegration: true,
 });
 ```
