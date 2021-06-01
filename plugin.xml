@@ -9,6 +9,12 @@
     <description>Cordova plugin for the Segment SDK</description>
     <author>James Yoon</author>
 
+    <!-- Add appboy variables included in config.xml to appboy.xml file -->
+    <preference name="ANDROID_API_KEY" />
+    <preference name="ANDROID_CUSTOM_ENDPOINT" />
+    <preference name="FCM_REGISTERATION_ENABLED" default="true" />
+    <preference name="FCM_SENDER_ID" />
+
     <access origin="api.segment.io" />
 
     <js-module name="SegmentCordovaPlugin" src="www/SegmentCordovaPlugin.js">
@@ -16,6 +22,14 @@
     </js-module>
 
     <platform name="android">
+        <!-- Add appboy variables included in config.xml to appboy.xml file -->
+        <config-file target="app/src/main/res/values/appboy.xml" parent="/*">
+            <string translatable="false" name="com_appboy_api_key">$ANDROID_API_KEY</string>
+            <string translatable="false" name="com_appboy_custom_endpoint">$ANDROID_CUSTOM_ENDPOINT</string>
+            <bool translatable="false" name="com_appboy_firebase_cloud_messaging_registration_enabled">$FCM_REGISTERATION_ENABLED</bool>
+            <string translatable="false" name="com_appboy_firebase_cloud_messaging_sender_id">$FCM_SENDER_ID</string>
+        </config-file>
+
         <config-file parent="/*" target="res/xml/config.xml">
             <feature name="SegmentCordovaPlugin">
                 <param name="android-package" value="com.segment.cordova.plugin.SegmentCordovaPlugin" />
