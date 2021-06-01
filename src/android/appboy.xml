@@ -1,7 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string translatable="false" name="com_appboy_api_key">$ANDROID_API_KEY</string>
-  <string translatable="false" name="com_appboy_custom_endpoint">$ANDROID_CUSTOM_ENDPOINT</string>
-  <bool translatable="false" name="com_appboy_firebase_cloud_messaging_registration_enabled">$FCM_REGISTERATION_ENABLED</bool>
-  <string translatable="false" name="com_appboy_firebase_cloud_messaging_sender_id">$FCM_SENDER_ID</string>
 </resources>

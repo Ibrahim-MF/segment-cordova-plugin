@@ -1,40 +1,69 @@
 {
-  "name": "segment-cordova-plugin",
-  "version": "4.0.0",
-  "description": "Segment Cordova Plugin",
-  "cordova": {
-    "id": "segment-cordova-plugin",
-    "platforms": [
-      "android",
-      "ios"
-    ]
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/kohofinancial/segment-cordova-plugin.git"
-  },
-  "dependencies": {},
-  "keywords": [
-    "cordova",
-    "segment",
-    "integration",
-    "analytics",
-    "ecosystem:cordova",
-    "cordova-android",
-    "cordova-ios"
-  ],
-  "author": "James Yoon",
-  "license": "MIT",
-  "devDependencies": {
-    "xcode": "1.0.0"
-  },
-  "engines": {
-    "cordovaDependencies": {
-      "4.0.0": {
-        "cordova": ">7.0.0",
-        "cordova-ios": ">4.3.0",
-        "cordova-android": ">7.0.0"
-      }
-    }
-  }
+	"_from": "git+https://github.com/Ibrahim-MF/segment-cordova-plugin.git",
+	"_id": "segment-cordova-plugin@4.0.1",
+	"_inBundle": false,
+	"_integrity": "",
+	"_location": "/segment-cordova-plugin",
+	"_phantomChildren": {},
+	"_requested": {
+		"type": "git",
+		"raw": "git+https://github.com/Ibrahim-MF/segment-cordova-plugin.git",
+		"rawSpec": "git+https://github.com/Ibrahim-MF/segment-cordova-plugin.git",
+		"saveSpec": "git+https://github.com/Ibrahim-MF/segment-cordova-plugin.git",
+		"fetchSpec": "https://github.com/Ibrahim-MF/segment-cordova-plugin.git",
+		"gitCommittish": null
+	},
+	"_requiredBy": [
+		"#DEV:/",
+		"#USER"
+	],
+	"_resolved": "git+https://github.com/Ibrahim-MF/segment-cordova-plugin.git#29c1c41eea6610b5fcafba5e959ba870a6c4e57a",
+	"_spec": "git+https://github.com/Ibrahim-MF/segment-cordova-plugin.git",
+	"_where": "D:\\Cloned\\MoneyFellowsAppV8",
+	"author": {
+		"name": "James Yoon"
+	},
+	"bugs": {
+		"url": "https://github.com/kohofinancial/segment-cordova-plugin/issues"
+	},
+	"bundleDependencies": false,
+	"cordova": {
+		"id": "segment-cordova-plugin",
+		"platforms": [
+			"android",
+			"ios"
+		]
+	},
+	"dependencies": {},
+	"deprecated": false,
+	"description": "Segment Cordova Plugin",
+	"devDependencies": {
+		"xcode": "12.0"
+	},
+	"engines": {
+		"cordovaDependencies": {
+			"4.0.0": {
+				"cordova": ">7.0.0",
+				"cordova-android": ">7.0.0",
+				"cordova-ios": ">4.3.0"
+			}
+		}
+	},
+	"homepage": "https://github.com/kohofinancial/segment-cordova-plugin#readme",
+	"keywords": [
+		"cordova",
+		"segment",
+		"integration",
+		"analytics",
+		"ecosystem:cordova",
+		"cordova-android",
+		"cordova-ios"
+	],
+	"license": "MIT",
+	"name": "segment-cordova-plugin",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/kohofinancial/segment-cordova-plugin.git"
+	},
+	"version": "4.0.1"
 }
